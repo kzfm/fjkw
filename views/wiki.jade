@@ -1,6 +1,16 @@
 h1= title
-p Welcome to #{title}
 
-p #{body}
+div#wikicontent #{body}
 
 p #{date}
+script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')
+script(type='text/javascript', src='/javascripts/jquery.editinplace.js')
+script
+  $("#wikicontent").editInPlace({
+    callback: function(unused, enteredText) { return enteredText; },
+    // url: "./server.php",
+    bg_over: "#cff",
+    field_type: "textarea",
+    textarea_rows: "15",
+    textarea_cols: "35"
+  }); 

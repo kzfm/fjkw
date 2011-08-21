@@ -3,6 +3,19 @@
  * Module dependencies.
  */
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/fjkw');
+var Schema = mongoose.Schema;
+
+var WikiContent = new Schema({
+    title     : String
+  , body      : String
+  , date      : Date
+});
+
+mongoose.model('WikiContent', WikiContent);
+WikiContent = mongoose.model('WikiContent');
+
 var express = require('express');
 
 var app = module.exports = express.createServer();
@@ -31,6 +44,42 @@ app.configure('production', function(){
 app.get('/', function(req, res){
   res.render('index', {
     title: 'Express'
+  });
+});
+
+app.get('/new', function(req, res){
+  res.render('form', {
+    title: 'new wiki form'
+  });
+});
+
+app.post('/new', function(req, res){
+  new WikiContent({title: req.param('title'), body: req.param('body'), date: new Date()}).save( 
+        function (){
+	  res.redirect('/'+req.param('title'));						 
+      });
+  });
+
+
+app.get('/:title', function(req, res){
+  WikiContent.findOne({title: req.params.title}, function (err, content) {
+    res.render('wiki', {
+      title: content.title,
+      body: content.body,
+      date: content.date
+    });
+  });
+});
+
+app.post('/:title', function(req, res){
+  WikiContent.findOne({title: req.params.title}, function (err, content) {
+    if (content == null) {
+    } else {
+      new WikiContent({title: req.params.title, body: req.param('body'), date: new Date()}).save( 
+        function (){
+	  res.redirect('/'+req.params.title);						 
+      });
+    }
   });
 });
 
