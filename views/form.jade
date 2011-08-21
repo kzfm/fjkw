@@ -1,0 +1,13 @@
+!!! 5
+h1 new data  
+
+form(method='post', action='/new')
+  label
+    | title:
+    input(name='title', size=80)
+  br
+  label
+    | body:
+    textarea(name='body', cols=80, rows=10)
+  br
+  input(type='submit')
