@@ -74,11 +74,12 @@ app.get('/:title', function(req, res){
 app.post('/:title', function(req, res){
   WikiContent.findOne({title: req.params.title}, function (err, content) {
     if (content == null) {
-    } else {
       new WikiContent({title: req.params.title, body: req.param('body'), date: new Date()}).save( 
         function (){
 	  res.redirect('/'+req.params.title);						 
       });
+    } else {
+
     }
   });
 });

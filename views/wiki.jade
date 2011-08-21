@@ -1,16 +1,18 @@
 h1= title
 
-div#wikicontent #{body}
+div.editable_textarea #{body}
 
 p #{date}
 script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')
-script(type='text/javascript', src='/javascripts/jquery.editinplace.js')
+script(type='text/javascript', src='/javascripts/jquery.jeditable.mini.js')
 script
-  $("#wikicontent").editInPlace({
-    callback: function(unused, enteredText) { return enteredText; },
-    // url: "./server.php",
-    bg_over: "#cff",
-    field_type: "textarea",
-    textarea_rows: "15",
-    textarea_cols: "35"
-  }); 
+  $(".editable_textarea").editable("#{title}", { 
+      indicator : "<img src='images/indicator.gif'>",
+      type   : 'textarea',
+      submitdata: { _method: "post" },
+      select : true,
+      submit : 'OK',
+      cancel : 'cancel',
+      cssclass : "editable"
+  });
+
