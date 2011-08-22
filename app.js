@@ -47,39 +47,36 @@ app.get('/', function(req, res){
   });
 });
 
-app.get('/new', function(req, res){
-  res.render('form', {
-    title: 'new wiki form'
-  });
-});
-
-app.post('/new', function(req, res){
-  new WikiContent({title: req.param('title'), body: req.param('body'), date: new Date()}).save( 
-        function (){
-	  res.redirect('/'+req.param('title'));						 
-      });
-  });
-
-
 app.get('/:title', function(req, res){
   WikiContent.findOne({title: req.params.title}, function (err, content) {
-    res.render('wiki', {
-      title: content.title,
-      body: content.body,
-      date: content.date
-    });
+      if (content == null) {
+        res.render('form', {
+          title: req.params.title
+        });
+      } else {
+        res.render('wiki', {
+        title: content.title,
+        body: content.body,
+        date: content.date
+        });
+      }
   });
 });
 
 app.post('/:title', function(req, res){
   WikiContent.findOne({title: req.params.title}, function (err, content) {
     if (content == null) {
-      new WikiContent({title: req.params.title, body: req.param('body'), date: new Date()}).save( 
+      new WikiContent({title:  req.params.title, body: req.param('body'), date: new Date()}).save( 
         function (){
-	  res.redirect('/'+req.params.title);						 
-      });
+          res.redirect('/'+req.params.title);
+      });       
     } else {
-
+      content.body = req.param('body');
+      content.date = new Date();
+      content.save( 
+        function (){
+          res.send(req.param('body'));
+      });       
     }
   });
 });

@@ -1,11 +1,7 @@
 !!! 5
-h1 new data  
+h1=title
 
-form(method='post', action='/new')
-  label
-    | title:
-    input(name='title', size=80)
-  br
+form(method='post', action='/'+ title)
   label
     | body:
     textarea(name='body', cols=80, rows=10)
