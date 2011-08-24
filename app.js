@@ -20,6 +20,9 @@ var express = require('express');
 
 var app = module.exports = express.createServer();
 
+// Markdown
+var md = require("node-markdown").Markdown;
+
 // Configuration
 
 app.configure(function(){
@@ -56,10 +59,16 @@ app.get('/:title', function(req, res){
       } else {
         res.render('wiki', {
         title: content.title,
-        body: content.body,
+        body: md(content.body),
         date: content.date
         });
       }
+  });
+});
+
+app.get('/md/:title', function(req, res){
+  WikiContent.findOne({title: req.params.title}, function (err, content) {
+    res.send(content.body);
   });
 });
 
@@ -75,7 +84,7 @@ app.post('/:title', function(req, res){
       content.date = new Date();
       content.save( 
         function (){
-          res.send(req.param('body'));
+          res.send(md(req.param('body')));
       });       
     }
   });

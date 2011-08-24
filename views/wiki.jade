@@ -1,14 +1,15 @@
 h1= title
 
-div.editable_textarea #{body}
+div.editable_textarea!= body
 p #{date}
 script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')
 script(type='text/javascript', src='/javascripts/jquery.jeditable.mini.js')
-script
+script.jeditable
   $(".editable_textarea").editable("#{title}", { 
       type   : 'textarea',
       submitdata: { _method: "post" },
       name     : 'body',
+      loadurl  : '/md/' + "#{title}",
       rows     : 10,
       submit : 'OK',
       cancel : 'cancel',
